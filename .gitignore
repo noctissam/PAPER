@@ -1,5 +1,6 @@
-# Excel / Office 临时锁文件
+# Office 临时锁文件
 ~$*
+~WRL*.tmp
 *.tmp
 # 系统垃圾
 Thumbs.db
