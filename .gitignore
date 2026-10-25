@@ -1,0 +1,10 @@
+# Excel / Office 临时锁文件
+~$*
+*.tmp
+# 系统垃圾
+Thumbs.db
+.DS_Store
+desktop.ini
+# Python
+__pycache__/
+*.pyc

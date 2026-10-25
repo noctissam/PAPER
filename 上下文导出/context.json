@@ -1,0 +1,323 @@
+{
+  "meta": {
+    "schema": "sensory-reanalysis-context/1.0",
+    "exported_at": "2026-10-25",
+    "workspace": "C:\\Users\\24252\\Desktop\\PPT\\课题\\26年\\26.10\\英文",
+    "language": "zh-CN",
+    "platform": "Windows / PowerShell / Python 3.12.7",
+    "python_libs": {
+      "pandas": "present",
+      "numpy": "1.26.4",
+      "scipy": "1.13.1",
+      "matplotlib": "3.9.2",
+      "scikit-learn": "1.5.1",
+      "openpyxl": "present",
+      "pymupdf": "present"
+    },
+    "console_note": "PowerShell 控制台为 GBK，中文输出会乱码；所有脚本一律写 UTF-8 文件再用 read 工具读取"
+  },
+
+  "project": {
+    "title": "江南大学酿酒工程本科毕业论文数据溯源与重分析",
+    "theses": [
+      { "author": "杨泽镔", "file": "杨泽镔-毕业论文_20250506000923.pdf", "topic": "关键单体香气化合物感知特性" },
+      { "author": "华铖凯", "file": "华铖凯-毕业论文.pdf", "topic": "关键混合香气化合物感知特性" }
+    ],
+    "objectives": [
+      "对两篇论文及其配套 Excel 原始数据做数据溯源、质量核查与交叉比对",
+      "判定图3 中 R 值是浓度-强度响应值还是参数选择问题",
+      "给出可投稿的 R / drc / ggplot2 级别的分析与可视化方案",
+      "以教学方式讲清 R 值机制、剂量响应分析与制图流程（不交代码，交教程）"
+    ],
+    "constraints": [
+      "报告中文化、结构化、带表格与严重程度分级（P0/P1/P2/P3）",
+      "比对以 CAS 号为主键；严格逐格/逐值核对，不接受估算",
+      "明确区分「已验证」与「推断」",
+      "不修改任何原始文件，所有产出为新文件"
+    ]
+  },
+
+  "data_assets": {
+    "单体混合感官特征理化数据.xlsx": {
+      "role": "主表",
+      "sheets": {
+        "组合数据": "156 行 x 43 列 = 91 单体 + 65 母液/混合；前 2 列编号/Sample，25 列化合物浓度，16 列 CATA 属性",
+        "Sheet5": "91 行 x 2 列 = Sample | 浓度(ppb)，10 倍系列稀释，0.1998 ~ 2.5e8 ppb，覆盖 15 个化合物",
+        "样品设计": "65 行 x 26 列，6 关键化合物的 2^6 全析因浓度矩阵"
+      }
+    },
+    "感官数据_混合化合物.xlsx": {
+      "role": "感官原始",
+      "sheets": {
+        "sample code": "化合物-编码对照（二甲基三硫(L)、乙酸异戊酯(Z1)、丁酸乙酯(Z2)、乙缩醛(Q)、己酸(S)、正己醇(C)）",
+        "单体数据原始数据": "1674 有效行；Sample/Subject/气味强度 + 15 CATA 属性",
+        "单体数据平均值": "96 行，其中 92 个 key 带强度均值",
+        "混合香气平均值": "65 行；强度列全空，仅 18 列 CATA",
+        "混合香气原始数据": "1261 行；无强度列，仅 CATA"
+      }
+    },
+    "重构分析.xlsx": { "role": "原始数据", "note": "含第三套阈值 Threshold 列（如己酸=2520）；曾存在 ~$ 锁文件" },
+    "data-analysis.xlsx": { "role": "原始数据", "note": "29 化合物 x 170 列文献浓度来源" }
+  },
+
+  "verified_findings": {
+    "data_layer": {
+      "raw_rows_valid": 1674,
+      "analysis_rows": 1566,
+      "assessors": 18,
+      "assessor_codes": "S01–S18",
+      "compounds_with_raw_intensity": 14,
+      "concentration_keys": 87,
+      "levels_per_compound": "5–8",
+      "duplicate_round": {
+        "keys": ["苯乙醇(C1)", "苯乙醇(C2)", "苯乙醇(C3)", "苯乙醇(C4)", "苯乙醇(C5)", "苯乙醇(C6)"],
+        "rows_removed": 108,
+        "test_retest_r_mean": -0.077,
+        "test_retest_r_range": [-0.349, 0.284],
+        "decision": "剔除第二轮（信度低于 r>=0.7 惯例）；合并版留档于 clean_assessor_level_两轮合并.csv"
+      },
+      "out_of_range": [{ "key": "苯乙醇(C6)", "subject": "S12", "value": 15, "scale": "0–12", "note": "位于被剔除的第二轮，主分析集内越界值 0 条" }],
+      "reconciliation_vs_reported_means": {
+        "comparable_keys": 83,
+        "exact_match": 60,
+        "mismatch": 23,
+        "max_abs_delta": 4.5,
+        "max_abs_delta_case": "异丁酸乙酯(C6) 重算 6.056 vs 论文 10.556"
+      },
+      "keys_in_table_without_raw": {
+        "count": 9,
+        "list": ["正丁醇(C1)", "正丁醇(C2)", "正丁醇(C3)", "正丁醇(C4)", "正丁醇(C5)", "正丁醇(C6)", "正丁醇(C7)", "2-甲基丁酸乙酯(C6)", "乙缩醛(C2)"]
+      },
+      "keys_in_raw_without_table": {
+        "count": 4,
+        "list": ["丁酸(C1)", "丁酸(C6)", "异丁酸乙酯(C8)", "苯乙醇(C7)"]
+      }
+    },
+
+    "r_value_traceability": {
+      "verdict": "R = 感官强度均值 / 12（正确，R²=0.99999）；模型 = Hill R = C^n/(Kd^n+C^n)（正确，R²=0.9998）；n 可反解（差 3–7%）；Kd/EC50 与所画曲线不对应",
+      "kd_mismatch_factors": "51× / 639× / 150000×，倍数不恒定",
+      "conclusion": "Kd 极可能取自图外来源（阈值实验或文献），非本图拟合所得；log 轴上 Kd 与 n 独立自由度，无法从曲线反推",
+      "method": "像素数字化：蓝点做 y 轴标定（锚 Excel 强度均值），网格线做 x 轴标定（41.08 px/十进制度），再读红曲线"
+    },
+
+    "dose_response_model": {
+      "final_model": "4 参数 log-logistic（自由下渐近线）: I(C) = d + (Imax - d) * C^n / (EC50^n + C^n)",
+      "model_verification": {
+        "3PL_vs_archive": "EC50 倍数中位 810，0/15 吻合 → 3PL 错误",
+        "4PL_vs_archive": "R² 15/15 完全一致；Imax 14/15、n 14/15、EC50 10/15 在 10% 内",
+        "conclusion": "模型确认为 4PL；EC50 不复现的 5 个化合物恰为低 n（<0.6）平坦曲线，属结构性不可辨识"
+      },
+      "ec50_range_ppb": [8.88, 79818249.13],
+      "ec50_fold_span": "约 9e6 倍",
+      "r2_range": [0.9498, 1.0],
+      "saturated_fit": "丁酸：4 个浓度点拟合 4 参数，R²=1.000，自由度=0",
+      "imax_above_scale": [
+        { "compound": "苯乙醇", "Imax": 19.83 },
+        { "compound": "苯乙酸乙酯", "Imax": 13.867 },
+        { "compound": "反，顺-2,6-壬二烯醛", "Imax": 12.722 },
+        { "compound": "二甲基三硫", "Imax": 12.71 },
+        { "compound": "异丁酸乙酯", "Imax": 12.697 }
+      ],
+      "degenerate_n_ci": [
+        { "compound": "二甲基三硫", "n": 0.292 },
+        { "compound": "反，顺-2,6-壬二烯醛", "n": 0.4895 },
+        { "compound": "正丁醇", "n": 1.2554 }
+      ],
+      "ec50_ci_span_examples": [
+        { "compound": "2-甲基丁酸乙酯", "ci": [1648.2, 398919.5], "fold": 242 },
+        { "compound": "苯乙醇", "ci": [44730649.7, 447335773.2], "fold": 10 },
+        { "compound": "己酸乙酯", "ci": [28399.1, 273541.7], "fold": 9.6 }
+      ]
+    },
+
+    "sample_design": {
+      "type": "2^6 全析因",
+      "key_compounds": ["二甲基三硫(L)", "乙酸异戊酯(Z1)", "丁酸乙酯(Z2)", "乙缩醛(Q)", "己酸(S)", "正己醇(C)"],
+      "structure": "母液1 = 全低基线；样品1-1 .. 1-63 = 其余 63 组合（1元6 / 2元15 / 3元20 / 4元15 / 5元6 / 6元1）",
+      "high_level_rule": "基线 x 1.3（高/低比 5–35 倍）",
+      "baseline_concentrations_ppb": {
+        "二甲基三硫": 8.8,
+        "乙酸异戊酯": 2789,
+        "丁酸乙酯": 3126,
+        "乙缩醛": 24220,
+        "己酸": 67970,
+        "正己醇": 57120
+      }
+    },
+
+    "additivity": {
+      "design": "15 组二元 x 15 属性 = 225 点",
+      "predictor": "p0 + (pA - p0) + (pB - p0)，截断到 [0,1]",
+      "pearson_r": 0.812,
+      "p_value": 6.02e-54,
+      "rmse": 0.0998,
+      "mean_bias": 0.0157,
+      "mean_abs_bias": 0.0669,
+      "synergistic_attributes": [
+        { "attr": "甜香", "dev": 0.0683 },
+        { "attr": "青草", "dev": 0.0676 },
+        { "attr": "麝香", "dev": 0.0646 },
+        { "attr": "水果", "dev": 0.0615 }
+      ],
+      "masking_attributes": [
+        { "attr": "花香", "dev": -0.0371 },
+        { "attr": "化学试剂", "dev": -0.0321 },
+        { "attr": "烘烤", "dev": -0.0196 },
+        { "attr": "清凉", "dev": -0.0151 }
+      ],
+      "largest_sd_attribute": { "attr": "酸味", "sd": 0.2577 },
+      "caveat": "混合物无强度数据，只能做属性勾选频率的定性加和判定；不可写成强度加和，不可等同 isobologram 或 sigma-tau"
+    },
+
+    "bimodality": {
+      "verdict": "不支持「敏感者/不敏感者」两类人群；个体差异为连续分布",
+      "silhouette_range": [0.1089, 0.1526],
+      "silhouette_interpretation": "<0.5 → 无可靠簇结构",
+      "gmm_bic": { "best_k": 1, "bic_k1": 23.93, "bic_k2": 31.47, "delta_bic_bic1_minus_bic2": -7.54 },
+      "grand_mean_range": [5.41, 6.95],
+      "grand_mean_sd": 0.41,
+      "per_level_delta_bic_gt10": { "count": 38, "total": 87, "pct": 44 },
+      "ceiling_levels": { "count": 7, "all_significant": true, "pct_at_12_threshold": 50 },
+      "strict_criteria": {
+        "criteria": [
+          "dBIC > 10",
+          "0.20 <= smaller-mixture weight <= 0.80",
+          "|mu1 - mu2| >= 3 scale units",
+          "3 <= level mean <= 9 (away from floor 0 and ceiling 12)",
+          "at least one empty bin run of span >= 3 between component means"
+        ],
+        "pass_counts_among_38": { "c2_weight": 22, "c3_separation": 15, "c4_midrange": 9, "c5_gap": 3 },
+        "all_five_pass": 1,
+        "pct": 1
+      },
+      "sole_survivor": {
+        "compound": "异丁酸乙酯",
+        "level": "C6",
+        "mean": 6.0556,
+        "sd": 2.4129,
+        "delta_bic": 81.32,
+        "component_mean_diff": 4.4,
+        "gap_span": 3,
+        "raw_values": [6, 6, 4, 9, 9, 9, 5, 9, 2, 5, 6, 9, 4, 5, 5, 9, 2, 5]
+      },
+      "kmeans_k3_sizes": [5, 8, 5],
+      "kmeans_k3_grand_means": [6.6, 5.89, 6.06],
+      "circularity_warning": "簇由同一批强度变量构造，簇间 t 检验不构成独立证据"
+    },
+
+    "threshold_systems": {
+      "count": 3,
+      "systems": [
+        "附表1 Kd 列 / 图3 标题",
+        "附表1 OAV 反推",
+        "重构分析.xlsx 的 Threshold 列（己酸=2520）"
+      ],
+      "status": "三套互不自洽，需统一"
+    }
+  },
+
+  "decisions": [
+    { "id": "D1", "decision": "组合数据的「组合数据」表为主表", "reason": "156 行 = 91 单体 + 65 母液/混合，覆盖度最高" },
+    { "id": "D2", "decision": "以第一轮评分作为主分析集，剔除苯乙醇第二轮", "reason": "两轮重测 r 均值 -0.077，远低于 0.7 惯例" },
+    { "id": "D3", "decision": "越界值 clip 到 12 并记录，不静默修改", "reason": "保守处理 + 可追溯" },
+    { "id": "D4", "decision": "严格 isobologram 放弃", "reason": "混合物无强度响应；二元组合 6 化合物与有梯度的 15 化合物交集仅二甲基三硫 1 个；CATA 粒度 1/18 使 sigma 退化" },
+    { "id": "D5", "decision": "图2 改为「加和预测 vs 实测」替代 sigma-tau", "reason": "sigma-tau 原版仅 26 点可用，tau 大量塌到 1.0" },
+    { "id": "D6", "decision": "图3 拆为 A/B 两张，各 7 化合物", "reason": "14 化合物单张会高约 28 英寸，无法排版印刷" },
+    { "id": "D7", "decision": "双峰结论改为负结果", "reason": "严格判据 1/87，BIC 最优 k=1，silhouette 全部 <0.16" },
+    { "id": "D8", "decision": "教程选型 R + drc + ggplot2 为首选，Prism 备选，Excel 明确不可用于投稿", "reason": "可复现性 + 期刊要求" }
+  ],
+
+  "artifacts": {
+    "main_figures": [
+      { "file": "教学示范图/fig_bubble.png", "figure": "Fig 1", "content": "15 化合物 EC50(log) x Imax，size=Hill n，color=R²，y=12 红线 + 外推区 + 贪心标签避让" },
+      { "file": "教学示范图/fig_additivity.png", "figure": "Fig 2", "content": "A 加和预测 vs 实测 225 点 + 分箱趋势；B 各属性平均偏差条形（含 SE 误差棒）" },
+      { "file": "教学示范图/fig_ridgeline_A.png", "figure": "Fig 3A", "content": "7 化合物 x 5–8 级 x 18 人 KDE 山脊 + 均值虚线" },
+      { "file": "教学示范图/fig_ridgeline_B.png", "figure": "Fig 3B", "content": "另 7 化合物，同版式" },
+      { "file": "教学示范图/fig_cluster_bimodality.png", "figure": "Fig 4", "content": "A 热图 / B PCA+聚类 / C silhouette / D BIC / E 逐点 dBIC / F 唯一真双峰例" }
+    ],
+    "supplementary_figures": [
+      { "file": "教学示范图/demo_single_panel.png", "figure": "S1", "content": "单面板 7 图层解剖", "script_status": "生成脚本已丢失" },
+      { "file": "教学示范图/demo_small_multiples.png", "figure": "S2", "content": "15 面板小倍数图", "script_status": "生成脚本已丢失" },
+      { "file": "教学示范图/demo_small_multiples.pdf", "figure": "S2", "content": "同上 PDF 矢量版", "script_status": "生成脚本已丢失" },
+      { "file": "教学示范图/demo_ec50_forest.png", "figure": "S3", "content": "EC50 + 95%CI 森林图", "script_status": "生成脚本已丢失" }
+    ],
+    "deprecated_figures": [
+      { "file": "教学示范图/fig_ridgeline.png", "reason": "旧版：仅 6 化合物且苯乙醇 C1–C6 每级 36 条重复计数" },
+      { "file": "教学示范图/fig_sigma_tau.png", "reason": "sigma-tau 方案已否决（可用点仅 26，tau 退化）" }
+    ],
+    "tables": [
+      "教学示范图/clean_assessor_level.csv",
+      "教学示范图/clean_assessor_level_两轮合并.csv",
+      "教学示范图/clean_raw_flagged.csv",
+      "教学示范图/qc_mean_vs_table.csv",
+      "教学示范图/qc_round1_vs_round2.csv",
+      "教学示范图/bimodality_by_level.csv",
+      "教学示范图/bimodality_GMM_by_level.csv",
+      "教学示范图/bimodality_strict.csv",
+      "教学示范图/assessor_clusters.csv",
+      "教学示范图/EC50_summary.csv",
+      "教学示范图/refit_3PL.csv",
+      "教学示范图/refit_4PL.csv",
+      "教学示范图/refit_from_table.csv",
+      "教学示范图/refit_from_clean.csv"
+    ],
+    "reports": [
+      "教学示范图/QC_数据质量报告.txt",
+      "教学示范图/QC_双峰与命名.txt",
+      "教学示范图/QC_聚类与双峰检验.txt"
+    ],
+    "docs": [
+      "教程_浓度强度剂量响应分析.md",
+      "教程_浓度响应图制作.md",
+      "英文图注与Methods.md"
+    ]
+  },
+
+  "open_issues": [
+    { "level": "P0", "issue": "异丁酸乙酯 EC50 的 95%CI 下界 (1,008,758) 大于点估计 (770,476)，CI 不含点估计", "impact": "CI 计算方法或参数化有误，图1/S3 的区间不可直接投稿" },
+    { "level": "P0", "issue": "图3 旧版苯乙醇 C1–C6 每级 36 条重复计数", "impact": "已在新版修正；若论文沿用旧图需重做" },
+    { "level": "P1", "issue": "23 个浓度点均值与论文均值表不符（最大差 4.50）", "impact": "需说明是取整、剔除规则还是笔误" },
+    { "level": "P1", "issue": "9 个均值表 key 无原始记录（正丁醇 C1–C7、2-甲基丁酸乙酯 C6、乙缩醛 C2）", "impact": "这些点无法复现" },
+    { "level": "P1", "issue": "两轮重测 r ≈ -0.077", "impact": "需在方法学说明第二轮处置理由" },
+    { "level": "P1", "issue": "图2 结论边界", "impact": "只能写 attribute salience 大体加和，不可写成强度加和" },
+    { "level": "P1", "issue": "正文 p19「二甲基三硫极低响应值」与附表1 的 0.84–0.90 矛盾", "impact": "未处理" },
+    { "level": "P1", "issue": "附表1 R 列定义无法反推（125 个值无从复现）", "impact": "需问原作者或补公式" },
+    { "level": "P2", "issue": "附表1 表题 OVA 应为 OAV；正文「酯13/醇4」应为 14/3", "impact": "文字错误" },
+    { "level": "P2", "issue": "三套阈值体系互不自洽", "impact": "需统一" },
+    { "level": "P2", "issue": "命名不一致：二甲基三硫醚↔二甲基三硫；反，顺-2，6-壬二稀醇↔反，顺-2,6-壬二烯醛（且「醇」应为「醛」）", "impact": "合并/比对时会错配" },
+    { "level": "P2", "issue": "demo_* 三张补充图的生成脚本已丢失", "impact": "图可复现性受损，需重写" },
+    { "level": "P3", "issue": "Methods 2.8 的伦理/基金/利益冲突声明待作者补写", "impact": "投稿前必填" }
+  ],
+
+  "reproduce": {
+    "run_order": [
+      { "step": 1, "script": "scripts/clean.py", "outputs": ["clean_assessor_level.csv", "clean_assessor_level_两轮合并.csv", "clean_raw_flagged.csv", "qc_mean_vs_table.csv", "qc_round1_vs_round2.csv", "QC_数据质量报告.txt"] },
+      { "step": 2, "script": "scripts/fig_ridge_all.py", "outputs": ["fig_ridgeline_A.png", "fig_ridgeline_B.png", "bimodality_by_level.csv", "QC_双峰与命名.txt"] },
+      { "step": 3, "script": "scripts/fig_cluster2.py", "outputs": ["fig_cluster_bimodality.png", "bimodality_GMM_by_level.csv", "bimodality_strict.csv", "assessor_clusters.csv", "QC_聚类与双峰检验.txt"], "env": "OMP_NUM_THREADS=1 可消除 sklearn KMeans 内存泄漏告警" },
+      { "step": 4, "script": "scripts/gen4.py", "outputs": ["fig_bubble.png", "fig_additivity.png", "fig_ridgeline.png (旧版, 已被 step2 取代)"] },
+      { "step": 5, "script": "scripts/refit2.py", "outputs": ["refit_3PL.csv", "refit_4PL.csv"], "note": "模型指认实验；refit.py 为 3PL 单模型版" },
+      { "step": 6, "script": "scripts/inventory.py", "outputs": ["上下文导出/文件清单.csv"] }
+    ],
+    "dependencies": "clean_*.csv 是 step2/3 的输入；EC50_summary.csv 是 gen4.py 的输入（由更早会话生成，无现存脚本）"
+  },
+
+  "traps": [
+    "归一化取 hc[2:27] 才是化合物列（前 2 列是编号/Sample）",
+    "原始表行首是汇总行（Subject 列写 999/998/345），新样品块由 A 列非空起始，需 ffill",
+    "名称需 strip 空白 + 全角括号归一化；列名中「丁酸乙酯   」等带尾随空格",
+    "乙缩醛 ↔ 乙醛二乙缩醛；正丁醇 ↔ 1-丁醇；己酸异戊酯 ↔ 己酸异戊脂",
+    "二甲基三硫醚 ↔ 二甲基三硫；反，顺-2，6-壬二稀醇 ↔ 反，顺-2,6-壬二烯醛",
+    "控制台 GBK：脚本写 UTF-8 文件后用 read 工具读，不要依赖 print",
+    "matplotlib 中文字体需 Microsoft YaHei；下标字符 ₁₂ 会缺字形，改用 BIC(1)/BIC(2)",
+    "ΔBIC 符号语义易反：BIC(1) - BIC(2) 为正才表示 2 组分更优"
+  ],
+
+  "next_steps": [
+    "补齐 demo_* 三张图的生成脚本，恢复全部图的可复现性",
+    "查清异丁酸乙酯 EC50 置信区间不含点估计的原因（P0）",
+    "向原作者索取附表1 R 列的计算公式",
+    "统一三套阈值体系并决定 OAV 基线",
+    "若校方要求补充实验：混合物强度 + 每对二元组合 4–5 个配比浓度，方可做真 isobologram"
+  ]
+}
