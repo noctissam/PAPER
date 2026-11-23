@@ -1,0 +1,6 @@
+Completed in R: R version 4.6.0 (2026-04-24) 
+Single compounds: 15 dose labels: 93 ratings: 1674 
+Mixture samples: 65 available records: 1132 missing records: 38 
+Models with frequent bootstrap boundary contact: 7 
+Maximum normalization invariance error: 2.220446e-16 
+All plots drawn by R graphics/grDevices.

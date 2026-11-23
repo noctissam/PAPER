@@ -1,0 +1,24 @@
+{
+  "single_compounds": 15,
+  "single_labels": 93,
+  "single_scores": 1674,
+  "single_n": 18,
+  "mixture_samples": 65,
+  "mixture_records": 1132,
+  "mixture_expected": 1170,
+  "mixture_missing": 38,
+  "mixture_n_min": 15,
+  "mixture_n_max": 18,
+  "input_library_archive": "libfile_b5da27252d7481918314c4cfc93fb13d",
+  "source_files": {
+    "感官数据_混合化合物.xlsx": "ac4ee942e7264434ceae01c924e424bf3a9c85719e903873d6bb7cafb7ef473a",
+    "单体混合感官特征理化数据.xlsx": "0374db32bb4a9cd2b7c9b3f0f5896f761dd01cd01486efb3927b245881bf5d27"
+  },
+  "data_policy": "Use individual records. Do not fill absent respondents with zero. Preserve the confirmed second phenylethanol block as 1-butanol and S12(C6)=12. Ethyl isobutyrate concentration mapping remains unresolved; retain all C1-C8 labels without concentration fitting.",
+  "repo": "noctissam/PAPER",
+  "repo_commit": "e099c6ca69d7df8b27bdc8cfa74e380705857d00",
+  "verified_git_blobs": {
+    "单体混合感官特征理化数据.xlsx": "96056ed5fb84c69445bfccf3d9c8c77c6c3a01d8",
+    "感官数据_混合化合物.xlsx": "1ba58e0dc193aa5e0eea88e02b127311d9f2bb20"
+  }
+}
