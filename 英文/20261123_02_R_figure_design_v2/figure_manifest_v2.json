@@ -1,0 +1,38 @@
+{
+  "version": 2,
+  "primary_book": "/workspace/scratch/2ddb3eadbb58/outputs/sensory_R_design_v2_20261123/Sensory_R_Figures_Design_V2_20261123.pdf",
+  "book_pages": 16,
+  "single_compounds": 15,
+  "mixture_samples": 65,
+  "source_data_unchanged": true,
+  "palette": [
+    "#DDA978",
+    "#CF8C65",
+    "#BD705A",
+    "#A95657",
+    "#91465A",
+    "#763C5A",
+    "#5A3354",
+    "#3D2946"
+  ],
+  "sample_colour": "#286E65",
+  "reference_colour": "#B87D4E",
+  "source_pdfs": [
+    "figures/V2_01_All15_Intensity.pdf",
+    "figures/V2_02_All15_Observed.pdf",
+    "figures/V2_03_Model_Comparison.pdf",
+    "figures/single_radar_pages/V2_04_Single_Radar_p01.pdf",
+    "figures/single_radar_pages/V2_04_Single_Radar_p02.pdf",
+    "figures/single_radar_pages/V2_04_Single_Radar_p03.pdf",
+    "figures/V2_06_Mixture_Six_SingleHigh.pdf",
+    "figures/mixture_radar_pages/V2_05_Mixture_Radar_p01.pdf",
+    "figures/mixture_radar_pages/V2_05_Mixture_Radar_p02.pdf",
+    "figures/mixture_radar_pages/V2_05_Mixture_Radar_p03.pdf",
+    "figures/mixture_radar_pages/V2_05_Mixture_Radar_p04.pdf",
+    "figures/mixture_radar_pages/V2_05_Mixture_Radar_p05.pdf",
+    "figures/mixture_radar_pages/V2_05_Mixture_Radar_p06.pdf",
+    "figures/single_radar_pages/V2_07_Single_CommonScale_p01.pdf",
+    "figures/single_radar_pages/V2_07_Single_CommonScale_p02.pdf",
+    "figures/single_radar_pages/V2_07_Single_CommonScale_p03.pdf"
+  ]
+}

@@ -1,0 +1,4 @@
+R figure design v2 complete.
+Cached statistics reused unchanged: 15 compounds, 93 dose labels, 65 mixture samples.
+All contours, circular grids, labels and legends drawn in R.
+Concentration palette: #DDA978, #CF8C65, #BD705A, #A95657, #91465A, #763C5A, #5A3354, #3D2946 
